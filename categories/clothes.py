@@ -2,7 +2,6 @@ import math
 from categories.item import Item
 
 class Clothes(Item):
-
     def adjust_quantity(self, quantity):
         if self.conditions['can_wash']:
             quantity = math.ceil(quantity / 2) + math.floor(quantity / 3)

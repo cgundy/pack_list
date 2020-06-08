@@ -3,7 +3,7 @@ from categories.clothes import Clothes
 from categories.electronics import Electronics
 
 def pack(class_category, conditions):
-    '''Determine which items needs to be packed within a given category.
+    '''Determine which items need to be packed within a given category.
     Returns: a list of tuples with the specific item and its quantity'''
 
     pack_list = []
@@ -24,6 +24,8 @@ def cli():
 
 
 def get_conditions():
+    '''Get the trip conditions from user input'''
+
     conditions = {}
     conditions['name'] = click.prompt('Trip to plan for')
     conditions['days'] = click.prompt('How many days are you traveling for?', type=int, prompt_suffix=' ')
@@ -45,6 +47,8 @@ def get_conditions():
 
 
 def generate_test_conditions():
+    '''Trip conditions for testing'''
+
     conditions = {
         'name':'test',
         'days':4,
@@ -62,6 +66,8 @@ def generate_test_conditions():
 @cli.command()
 @click.option('--input', default='user')
 def create_pack_list(input):
+    '''Create the packlist of all items based on trip conditions.'''
+
     if input == 'test':
         travel_conditions = generate_test_conditions()
     elif input == 'user':
