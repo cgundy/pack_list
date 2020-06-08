@@ -2,20 +2,21 @@ import math
 from item import Item
 
 class Clothes(Item):
-    def adjust_quantity(self):
-        raise NotImplementedError
+
+    def adjust_quantity(self, quantity):
+        if self.conditions['can_wash']:
+            quantity = math.ceil(quantity / 2) + math.floor(quantity / 3)
+        return quantity
 
 class Underwear(Clothes):
-    @staticmethod
-    def get_quantity(conditions):
-        return conditions['days']+2
+    def get_quantity(self):
+        return self.conditions['days']+2
     
 class Jeans(Clothes):
-    @staticmethod
-    def get_quantity(conditions):
-        if conditions['weather'] in ['cold','mild']:
-            return math.ceil(conditions['days']/2)
-        elif conditions['weather'] == 'hot':
-            return math.ceil(conditions['days']/6)
+    def get_quantity(self):
+        if self.conditions['weather'] in ['cold','mild']:
+            return math.ceil(self.conditions['days']/2)
+        elif self.conditions['weather'] == 'hot':
+            return math.ceil(self.conditions['days']/6)
         else:
             return 0

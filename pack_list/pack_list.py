@@ -8,7 +8,8 @@ def pack(class_category, conditions):
     item_list = class_category.__subclasses__()
 
     for item in item_list:
-        quantity = item.get_quantity(conditions)
+        quantity = item(conditions).get_quantity()
+        quantity = class_category(conditions).adjust_quantity(quantity)
         if quantity > 0:
             pack_list.append((item.__name__, quantity))
 
@@ -41,11 +42,12 @@ def get_conditions():
 
 
 def create_pack_list():
-    conditions = {
+    travel_conditions = {
         'days':5,
-        'weather':'mild'
+        'weather':'mild',
+        'can_wash': True
     }
-    clothes = pack(Clothes, conditions)
+    clothes = pack(Clothes, travel_conditions)
     print(clothes)
 
 if __name__ == '__main__':
