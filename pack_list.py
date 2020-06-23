@@ -1,8 +1,11 @@
 import click
 from categories.clothes import Clothes
 from categories.electronics import Electronics
+from categories.item import Item, Conditions 
+from typing import Callable, Iterator, Union, Optional, List, Dict, Tuple, Type
 
-def pack(class_category, conditions):
+
+def pack(class_category: Union[Type[Electronics], Type[Clothes]], conditions: Conditions) -> List[Tuple[str,int]]:
     '''Determine which items need to be packed within a given category.
     Returns: a list of tuples with the specific item and its quantity'''
 
@@ -15,7 +18,6 @@ def pack(class_category, conditions):
             quantity = class_category(conditions).adjust_quantity(quantity)
         if quantity > 0:
             pack_list.append((item.__name__, quantity))
-
     return pack_list
 
 @click.group()
@@ -23,10 +25,10 @@ def cli():
     pass
 
 
-def get_conditions():
+def get_conditions() -> Conditions:
     '''Get the trip conditions from user input'''
 
-    conditions = {}
+    conditions: Conditions = generate_test_conditions()
     conditions['name'] = click.prompt('Trip to plan for')
     conditions['days'] = click.prompt('How many days are you traveling for?', type=int, prompt_suffix=' ')
     conditions['can_wash'] = click.prompt('Will you have access to a washer and dryer during the trip?',
@@ -41,15 +43,13 @@ def get_conditions():
                             type=bool, prompt_suffix=' ')
     conditions['will_work'] = click.prompt('Will you be working during your trip?',
                             type=bool, prompt_suffix=' ')
-    conditions['travel_alone'] = click.prompt('Will you be traveling alone?',
-                            type=bool, prompt_suffix=' ')
     return conditions
 
 
-def generate_test_conditions():
+def generate_test_conditions() -> Conditions:
     '''Trip conditions for testing'''
 
-    conditions = {
+    conditions: Conditions = {
         'name':'test',
         'days':4,
         'weather':'hot',
@@ -57,15 +57,14 @@ def generate_test_conditions():
         'store_available': True,
         'outdoors' : True,
         'downtime': True,
-        'will_work': True,
-        'travel_alone': True
+        'will_work': True
     }
     return conditions
 
 
 @cli.command()
 @click.option('--input', default='user')
-def create_pack_list(input):
+def create_pack_list(input:str) -> None:
     '''Create the packlist of all items based on trip conditions.'''
 
     if input == 'test':

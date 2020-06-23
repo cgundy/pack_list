@@ -1,14 +1,15 @@
 import math
+from typing import Callable, Iterator, Union, Optional, List, Dict, Tuple
 from categories.item import Item
 
 class Electronics(Item):
-    def adjust_quantity(self, quantity):
+    def adjust_quantity(self, quantity: int) -> int:
         if not self.conditions['store_available']:
             quantity += 1
         return quantity
 
 class Ipad(Electronics):
-    def get_quantity(self):
+    def get_quantity(self) -> int:
         if self.conditions['days'] <= 3 and self.conditions['downtime'] == False:
             return 1
         elif self.conditions['days'] > 5:
@@ -17,7 +18,7 @@ class Ipad(Electronics):
             return 0
 
 class Laptop(Electronics):
-    def get_quantity(self):
+    def get_quantity(self) -> int:
         if self.conditions['days'] <= 3 and self.conditions['downtime'] == False:
             quantity = 0
         else:
@@ -27,14 +28,14 @@ class Laptop(Electronics):
         return quantity
 
 class PhoneCharger(Electronics):
-     def get_quantity(self):III
+     def get_quantity(self) -> int:
         if self.conditions['days'] > 3:
             return 2
         else:
             return 1
 
 class HeadPhones(Electronics):
-    def get_quantity(self):
+    def get_quantity(self) -> int:
         if self.conditions['days'] > 5:
             quantity = 3
         else:
